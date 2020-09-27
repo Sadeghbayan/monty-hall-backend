@@ -5,18 +5,47 @@ var router = express.Router();
 /* simulate the game with given data */
 router.post('/', function(req, res, next) {
 
-	console.log(req.body)
-
 	// given data
+	 const { number, isSwitch} = req.body;
 
-	 const { numberOfSimulation, switchable} = req.body;
+	function runMontyHall(toSwitch) {
 
-	 console.log(numberOfSimulation, switchable)
+		const doors = [0,1,2]
+		let carIsIn = Math.floor(Math.random() * doors.length);
 
+		let doorSelected = Math.floor(Math.random() * doors.length);
+
+		let revealedDoor = doors.find((door) => door !== carIsIn && door !== doorSelected);
+
+		if(toSwitch){
+			return carIsIn === doors.find((door) => door !== doorSelected && door !== revealedDoor)
+		}
+		else {
+			return carIsIn === doorSelected
+		}
+
+	}
+
+	function simulateGame(number, toSwitch) {
+
+		// TODO check number with 01
+		let gamesReportWin = 0;
+		let gameresult = {};
+		if(number !== null && number !== '' && Number(number) >= 0) {
+			for(let i = 0; i < number; i++){
+				gamesReportWin += runMontyHall(toSwitch)
+			}
+		}else {
+			gamesReportWin = -1;
+		}
+
+		gameresult = {number, toSwitch, gamesReportWin}
+		return gameresult
+	}
 
 
   res.json({
-    date: new Date().toISOString()
+	  gamesReport: simulateGame(number, isSwitch)
   });
 });
 
