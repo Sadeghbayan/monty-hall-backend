@@ -11,6 +11,7 @@ router.post('/', function(req, res, next) {
 	function runMontyHall(toSwitch) {
 
 		const doors = [0,1,2]
+
 		let carIsIn = Math.floor(Math.random() * doors.length);
 
 		let doorSelected = Math.floor(Math.random() * doors.length);
@@ -28,9 +29,9 @@ router.post('/', function(req, res, next) {
 
 	function simulateGame(number, toSwitch) {
 
-		// TODO check number with 01
 		let gamesReportWin = 0;
 		let gameresult = {};
+
 		if(number !== null && number !== '' && Number(number) >= 0) {
 			for(let i = 0; i < number; i++){
 				gamesReportWin += runMontyHall(toSwitch)
@@ -39,7 +40,8 @@ router.post('/', function(req, res, next) {
 			gamesReportWin = -1;
 		}
 
-		gameresult = {number, toSwitch, gamesReportWin}
+		gameresult = { number, toSwitch, gamesReportWin }
+
 		return gameresult
 	}
 
